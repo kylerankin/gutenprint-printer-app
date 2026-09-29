@@ -39,3 +39,17 @@ PTR/SRV/TXT queries from port 5353, legacy unicast if the port cannot be
 shared) that prints one JSON record per resolved service instance; it needs
 host networking for the instances and no Avahi client. Neither proves USB
 or paper output.
+
+`tests/service-advertisements.sh` is the host-network counterpart. On an
+otherwise quiet test LAN it browses the real `_ssh._tcp`, `_sftp-ssh._tcp`
+and `_ipp._tcp` records before and after starting and restarting two
+instances with distinct names, ports and state volumes, proving the built
+image ships no inherited Avahi SSH/SFTP record while each instance's own IPP
+queue still resolves on its distinct port and `rp=` path. It needs host
+`avahi-daemon` and `avahi-browse`, so it runs as an operator recipe
+(`just verify-service-advertisements`) rather than part of `just verify`.
+`tests/service-advertisements.sh` accepts `IMAGE=<ref>` to observe another
+build, `PORT=<base-port>` to move the two instances off the default
+`18546`/`18547`, and `EVIDENCE_DIR=<dir>` to keep the browsed records,
+container logs and image metadata instead of a temporary directory. It proves
+nothing about physical discovery or printed paper.
