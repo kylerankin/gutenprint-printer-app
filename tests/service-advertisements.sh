@@ -54,15 +54,19 @@ remote_records() {
 check_records() {
   local phase="$1" service index
   for service in _ssh._tcp _sftp-ssh._tcp; do
-    diff -u <(remote_records "$evidence/before.$service") \
-      <(remote_records "$evidence/$phase.$service")
+    if ! diff -u <(remote_records "$evidence/before.$service") \
+                  <(remote_records "$evidence/$phase.$service"); then
+      fail "$service records changed in $phase"
+    fi
   done
   for index in 0 1; do
     # A resolved queue record must advertise this instance's distinct IPP port.
-    awk -F ';' -v port="$((port + index))" -v queue="${names[index]}" '
+    if ! awk -F ';' -v port="$((port + index))" -v queue="${names[index]}" '
       $1 == "=" && $9 == port && index($0, "rp=ipp/print/" queue) {found=1}
       END {exit !found}
-    ' "$evidence/$phase._ipp._tcp"
+    ' "$evidence/$phase._ipp._tcp"; then
+      fail "IPP queue ${names[index]} did not resolve in $phase"
+    fi
   done
 }
 fail() {
