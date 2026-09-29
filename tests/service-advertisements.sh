@@ -98,7 +98,9 @@ for line in sys.stdin:
         print(line.split()[0].strip("\""))
         break
 ' "$model" <<< "$drivers")"
-  [[ -z "$driver" || "$driver" == *[!a-z0-9-]* ]] || fail "no expert '$model' driver in $name live catalog"
+  if [[ -z "$driver" || "$driver" == *[!a-z0-9-]* ]]; then
+    fail "no expert '$model' driver in $name live catalog"
+  fi
   printf '%s' "$driver"
 }
 
