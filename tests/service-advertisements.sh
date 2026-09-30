@@ -31,7 +31,7 @@ cleanup() {
   podman unshare rm -rf "$state_dir"
 }
 trap cleanup EXIT
-for command in podman avahi-browse timeout curl; do
+for command in podman avahi-browse timeout curl python3; do
   command -v "$command" >/dev/null
 done
 podman image inspect "$image" > "$evidence/image.json"
@@ -85,7 +85,7 @@ wait_for_http() {
     fi
     sleep 1
   done
-  return 1
+  fail "service on port $target did not answer HTTP within 60s"
 }
 
 # Discover a real Gutenprint expert driver so the queue setup does not depend

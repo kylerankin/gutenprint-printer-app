@@ -340,7 +340,7 @@ Podman, so a reintroduction fails `just verify` without host networking.
 
 `just verify-service-advertisements` is the host-network counterpart. On an
 otherwise quiet test LAN it browses the real records before and after
-starting and restarting two instances with distinct names, ports and state
+starting two instances and restarting one of them with distinct names, ports and state
 volumes, proving neither adds a remote-login record while each instance's own
 IPP queue still resolves on its distinct port. It needs host Avahi and
 `avahi-browse`, so it is an operator-run recipe rather than part of
