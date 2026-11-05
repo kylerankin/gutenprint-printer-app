@@ -153,11 +153,9 @@ def check_tree(root):
 # Installs that predate this gate and still need pinning. Each entry is the
 # exact error the gate reports today; once the install is pinned the entry
 # goes stale and the test fails until it is removed, so the list only shrinks.
-# Pinning validate.yml (pip install -r .github/requirements-ci.txt) must delete
-# its entry below in the same commit.
-BASELINE = frozenset({
-    ".github/workflows/validate.yml:29:1: pip argument must use an exact == version: pre-commit",
-})
+# validate.yml's pre-commit install is now pinned via
+# .github/requirements-ci.txt, so its former BASELINE entry is empty.
+BASELINE = frozenset()
 
 
 class PythonInstallPinTests(unittest.TestCase):

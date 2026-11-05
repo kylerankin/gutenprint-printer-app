@@ -26,7 +26,10 @@ jobs:
           persist-credentials: false
 
       - name: Install pre-commit
-        run: pip install pre-commit
+        run: pip install -r .github/requirements-ci.txt
+
+      - name: Check Python installs are pinned
+        run: python3 tests/test_python_install_pins.py
 
       - name: Cache pre-commit hooks
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
