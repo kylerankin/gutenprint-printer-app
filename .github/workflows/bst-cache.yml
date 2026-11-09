@@ -22,10 +22,15 @@ on:
 
 permissions:
   contents: read
-  actions: write
 
 jobs:
   refill:
+    # Only this job touches GitHub Actions caches (deleting and listing old
+    # BuildStream caches). Scope actions: write to it, not the workflow, so a
+    # future job never inherits write access it does not need.
+    permissions:
+      contents: read
+      actions: write
     name: Refill (${{ matrix.arch }})
     strategy:
       fail-fast: false

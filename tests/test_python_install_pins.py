@@ -28,7 +28,7 @@ INSTALL = re.compile(
 )
 FLAGS = {"-q", "--quiet", "-U", "--upgrade", "--user", "--no-deps",
          "--no-cache-dir", "--require-hashes", "--break-system-packages",
-         "--disable-pip-version-check", "--no-input"}
+         "--disable-pip-version-check", "--no-input", "--only-binary=:all:"}
 
 
 def logical_lines(text):
@@ -170,6 +170,7 @@ class PythonInstallPinTests(unittest.TestCase):
             (root / "requirements.txt").write_text("# helpers\npyyaml==6.0.3\njsonschema==4.26.0\n")
             for command in (
                 "pip install pyyaml==6.0.3 jsonschema==4.26.0",
+                "pip install --require-hashes --only-binary=:all: -r requirements.txt",
                 "pip3 install -q 'pyyaml==6.0.3' # comment",
                 "python3 -m pip install --quiet -r requirements.txt",
                 "pip install --requirement=requirements.txt",

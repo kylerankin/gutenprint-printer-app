@@ -26,7 +26,7 @@ jobs:
           persist-credentials: false
 
       - name: Install pre-commit
-        run: pip install -r .github/requirements-ci.txt
+        run: "pip install --require-hashes --only-binary=:all: -r .github/requirements-ci.txt"
 
       - name: Check Python installs are pinned
         run: python3 tests/test_python_install_pins.py
