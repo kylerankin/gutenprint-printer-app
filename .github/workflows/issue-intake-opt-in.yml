@@ -25,6 +25,9 @@ jobs:
     steps:
       - name: Remove needs-human when machine analysis is welcome
         env:
+          # gh needs a token to authenticate; pass the runner token explicitly
+          # like ci-alert.yml does, so the label removal is never silently skipped.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           REPO: ${{ github.repository }}
